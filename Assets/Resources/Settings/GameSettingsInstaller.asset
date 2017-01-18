@@ -1,0 +1,64 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: accd353af1231e34ba2fa73e6d26f8d7, type: 3}
+  m_Name: GameSettingsInstaller
+  m_EditorClassIdentifier: 
+  GameInstaller:
+    FactionPickerPrefab: {fileID: 1508320121969296, guid: fd6f7a01b4fd1d34c9b2ff4ba8b41d68,
+      type: 2}
+    ShowCoordsPrefab: {fileID: 1954860073402802, guid: 32335c268fd0a18498f96bff7c5b3b0f,
+      type: 2}
+    StarSystemPrefab: {fileID: 1886302894981958, guid: 64b8f4f8ccb8b0244981ce37f9a4fd1f,
+      type: 2}
+    PlayerHUDPrefab: {fileID: 1922226704970586, guid: b5bc063756ff5c6428247b70e7dd0890,
+      type: 2}
+    PlayerCardPrefab: {fileID: 1997086785753568, guid: 88e74d7d1ed77184d9463ff2ace1a6bc,
+      type: 2}
+    SystemHUDPrefab: {fileID: 1552152117999840, guid: e3164ffe84b7f554f8fb7a82403ee445,
+      type: 2}
+  GameController:
+    OfflineMode: 0
+  UIManager:
+    ShowCoordinatesOnClick: 0
+  NetworkManager:
+    ServerHostName: innersphereonline.com
+    ServerPort: 3025
+    ServerBindIP: 173.249.147.26
+    PlayerPrefab: {fileID: 1366962973365876, guid: a1a28fd7ba42f5f4198c25963ff46619,
+      type: 2}
+    StarSystemPrefab: {fileID: 1886302894981958, guid: 64b8f4f8ccb8b0244981ce37f9a4fd1f,
+      type: 2}
+  StarSystemController:
+    Prefab_ha: {fileID: 4949316836112818, guid: 10ea52af25754ac42b2487bdff5eb5b4,
+      type: 2}
+    Prefab_hb: {fileID: 4989783690329766, guid: 95b7cf4ba0faef2498a7b222193245dd,
+      type: 2}
+    Prefab_hf: {fileID: 4245558968544580, guid: 859e6cc3112172b4597c75a93a6a346f,
+      type: 2}
+    Prefab_hg: {fileID: 4984807393909500, guid: 5efc387e776fae849b20217689d724d7,
+      type: 2}
+    Prefab_hk: {fileID: 4328819263781652, guid: 3e5901b6c0524cb4585667c90cddab92,
+      type: 2}
+    Prefab_hm: {fileID: 4715778895399688, guid: 4ec9badf7ae681348a32dd193456be53,
+      type: 2}
+    Prefab_ho: {fileID: 4405266034486544, guid: b1a0fd9a77b1da44691ea4c90cec1bff,
+      type: 2}
+    Prefab_sunknown: {fileID: 4410094036759454, guid: 3152e879cf9d01843813823b64374b3d,
+      type: 2}
+  InnerSphereBuilder:
+    StarSystemPrefab: {fileID: 1886302894981958, guid: 64b8f4f8ccb8b0244981ce37f9a4fd1f,
+      type: 2}
+    ShowDummySystems: 0
+  CameraHandler:
+    CameraDistanceMax: 50
+    CameraDistanceMin: -5000
+    PanSpeed: 300
+    GlideSpeedBase: 1.3
