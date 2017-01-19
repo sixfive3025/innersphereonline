@@ -110,7 +110,6 @@ public class ISONetworkManager : NetworkManager, IInitializable {
 
 	// On the client, destroy the game object.
 	private void UnSpawn(GameObject spawned) {
-		Debug.Log("UnSpawn()");
 		Destroy(spawned.gameObject);
 	}
 	

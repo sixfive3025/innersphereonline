@@ -18,11 +18,9 @@ public class PlayerHUDUI : MonoBehaviour {
 	{
 		PlayerCardUI playerCard = _playerCardFactory.Create(player);
 		_players.Add(player, playerCard);
-
-		// Make the card a child of the list and draw them in a vertical list
 		playerCard.transform.SetParent( gameObject.transform );
-		RectTransform playerTransform = playerCard.gameObject.GetComponent<RectTransform>();
-		playerTransform.anchoredPosition = new Vector2( 30, -30 - ((_players.Count-1)*55) );	
+
+		_positionAllCards();
 	}
 
 	public void RemovePlayer( PlayerController player )
@@ -30,7 +28,18 @@ public class PlayerHUDUI : MonoBehaviour {
 		Destroy(_players[player].gameObject);
 		_players.Remove(player);
 
-		// TODO: Redraw the list so a gap isn't left behind
+		_positionAllCards();
+	}
+
+	private void _positionAllCards()
+	{
+		int count = 0;
+		foreach ( KeyValuePair<PlayerController,PlayerCardUI> player in _players )
+		{
+			RectTransform playerTransform = player.Value.gameObject.GetComponent<RectTransform>();
+			playerTransform.anchoredPosition = new Vector2( 30, -30 - ((count)*55) );
+			count++;
+		}
 	}
 
 	public class Factory : Factory<PlayerHUDUI> {}
