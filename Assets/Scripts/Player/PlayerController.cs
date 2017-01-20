@@ -4,7 +4,7 @@ using Zenject;
 
 public class PlayerController : NetworkBehaviour {
 
-	[SyncVar] 
+	[SyncVar(hook="SyncPlayerName")] 
 	public string _playerName;
 
 	[Inject]
@@ -12,6 +12,9 @@ public class PlayerController : NetworkBehaviour {
 
 	private SignalDispatcher _signalDispatcher;
 	private Signals.SystemFactionChanged _systemFactionChangedSignal;
+
+	public delegate void NotifyPlayerNameChanged();
+	public NotifyPlayerNameChanged NotifyPlayerNameChangeDelegate = null;
 
 	[Inject]
 	public void Construct(SignalDispatcher signalDispatcher, 
@@ -28,7 +31,14 @@ public class PlayerController : NetworkBehaviour {
 		{ 
 			_playerName = value;
 			if (isClient) CmdSetPlayerName(value);
+			if ( NotifyPlayerNameChangeDelegate != null ) NotifyPlayerNameChangeDelegate();
 		}
+	}
+
+	private void SyncPlayerName( string playerName )
+	{
+		_playerName = playerName;
+		if ( NotifyPlayerNameChangeDelegate != null ) NotifyPlayerNameChangeDelegate();
 	}
 
 	void Start () 

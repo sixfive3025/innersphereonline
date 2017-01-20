@@ -11,11 +11,18 @@ public class PlayerCardUI : MonoBehaviour {
 	{
 		_targetPlayer = targetPlayer;
 		_targetPlayer.GetComponent<FactionController>().NotifyFactionChangedDelegate += UpdateFactionColor;
+		_targetPlayer.NotifyPlayerNameChangeDelegate += UpdatePlayerName;
 	}
 	
 	public void Start()
 	{
 		UpdateFactionColor();
+		GetComponentInChildren<Text>().text = _targetPlayer.PlayerName;
+	}
+
+	public void UpdatePlayerName()
+	{
+		GetComponentInChildren<Text>().text = _targetPlayer.PlayerName;
 	}
 
 	public void UpdateFactionColor()
