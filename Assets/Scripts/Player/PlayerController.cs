@@ -4,6 +4,9 @@ using Zenject;
 
 public class PlayerController : NetworkBehaviour {
 
+	[SyncVar] 
+	public string _playerName;
+
 	[Inject]
 	readonly LocalPlayerManager _localPlayerManager;
 
@@ -18,12 +21,23 @@ public class PlayerController : NetworkBehaviour {
 		_systemFactionChangedSignal = systemFactionChangedSignal;
 	}
 
+	public string PlayerName
+	{
+		get { return _playerName; }
+		set 
+		{ 
+			_playerName = value;
+			if (isClient) CmdSetPlayerName(value);
+		}
+	}
+
 	void Start () 
 	{
 		_systemFactionChangedSignal += TransferSystemFaction;
 
 		if (isLocalPlayer)
 		{
+			PlayerName = _localPlayerManager.PlayerName;
 			FactionController factC = gameObject.GetComponent<FactionController>();
 			factC.SetFromString(_localPlayerManager.PlayerFactionString);
 		}
@@ -46,6 +60,12 @@ public class PlayerController : NetworkBehaviour {
 	public void CmdTransferSystemFaction( GameObject system, string newFaction )
 	{
 		system.GetComponent<FactionController>().SetFromString(newFaction);
+	}
+
+	[Command]
+	public void CmdSetPlayerName( string name )
+	{
+		_playerName = name;
 	}
 
 	void OnDestroy()

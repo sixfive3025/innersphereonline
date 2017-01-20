@@ -4,24 +4,36 @@ using Zenject;
 
 public class FactionPickerUI : MonoBehaviour {
 
-	private Signals.FactionSelected _factionSelectedSignal;
-	private Button[] _factionButtons;
+	private SignalDispatcher _signalDispatcher;
+	private Button[] _buttons;
+	private string _faction = "";
 
 	[Inject]
-	public void Construct(Signals.FactionSelected factionSelectedSignal) 
+	public void Construct(SignalDispatcher signalDispatcher) 
 	{
-		_factionSelectedSignal = factionSelectedSignal;
+		_signalDispatcher = signalDispatcher;
 
-		_factionButtons = GetComponentsInChildren<Button>();
-		foreach ( Button btn in _factionButtons )
+		_buttons = GetComponentsInChildren<Button>();
+		foreach ( Button btn in _buttons )
 		{
-			btn.onClick.AddListener( () => ChooseFaction(btn.gameObject.name));
+			if ( btn.name == "JoinGameButton" )
+				btn.onClick.AddListener( () => JoinGame());
+			else btn.onClick.AddListener( () => ChooseFaction( btn.name ));
 		}
 	}
 
 	public void ChooseFaction( string factionChosen )
 	{
-		_factionSelectedSignal.Fire(factionChosen);
+		_faction = factionChosen;
+	}
+
+	public void JoinGame()
+	{
+		InputField playerNameField = GetComponentInChildren<InputField>();
+		if ( _faction != "")
+		{
+			_signalDispatcher.DispatchFactionSelected(_faction, playerNameField.text);
+		}
 	}
 
 	public class Factory : Factory<FactionPickerUI> {}

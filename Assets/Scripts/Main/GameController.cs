@@ -56,8 +56,9 @@ public class GameController : IInitializable, IDisposable, ITickable {
 		_factionSelectedSignal -= OnFactionSelected;
 	}
 	
-	void OnFactionSelected ( string factionChosen )
+	void OnFactionSelected ( string factionChosen, string playerName )
 	{
+		_localPlayerManager.PlayerName = playerName;
 		_localPlayerManager.PlayerFactionString = factionChosen;
 		_networkManager.CreateISOPlayer();
 		_state = GameStates.Playing;

@@ -3,7 +3,7 @@ using Zenject;
 
 public static class Signals {
 
-	public class FactionSelected : Signal<FactionSelected,string> {}
+	public class FactionSelected : Signal<FactionSelected,string,string> {}
 	public class SystemFactionChanged : Signal<SystemFactionChanged,GameObject,string> {}
 	public class PlayerJoined : Signal<PlayerJoined,PlayerController> {}
 	public class PlayerDeparted : Signal<PlayerDeparted,PlayerController> {}
@@ -27,9 +27,9 @@ public class SignalDispatcher {
 		_playerDepartedSignal = playerDepartedSignal;
 	}
 
-	public void DispatchFactionSelected( string chosenFaction )
+	public void DispatchFactionSelected( string chosenFaction, string playerName )
 	{
-		_factionSelectedSignal.Fire(chosenFaction);
+		_factionSelectedSignal.Fire(chosenFaction, playerName);
 	}
 
 	public void DispatchSystemFactionChanged( StarSystemController system, string newFaction )
