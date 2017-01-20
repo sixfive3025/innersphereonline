@@ -6,13 +6,14 @@ public class SystemHUDUI : MonoBehaviour {
 
 	private SignalDispatcher _signalDispatcher;
 	private StarSystemController _targetStarSystem;
-	private Button[] _factionButtons;
+	private LocalPlayerManager _localPlayerManager;
 
 	[Inject]
-	public void Construct(StarSystemController targetStarSystem, SignalDispatcher signalDispatcher) 
+	public void Construct(StarSystemController targetStarSystem, SignalDispatcher signalDispatcher, LocalPlayerManager localPlayerManager) 
 	{
 		_targetStarSystem = targetStarSystem;
 		_signalDispatcher = signalDispatcher;
+		_localPlayerManager = localPlayerManager;
 
 		GetComponentsInChildren<Text>()[0].text = _targetStarSystem.StarName;
 	
@@ -36,16 +37,12 @@ public class SystemHUDUI : MonoBehaviour {
 				GetComponentsInChildren<Text>()[x].text = "";
 		}
 
-		_factionButtons = GetComponentsInChildren<Button>();
-		foreach ( Button btn in _factionButtons )
-		{
-			btn.onClick.AddListener( () => ChangeSystemFaction(btn.gameObject.name));
-		}
+		GetComponentInChildren<Button>().onClick.AddListener( () => CaptureSystem() );
 	}
 
-	public void ChangeSystemFaction( string factionChosen )
+	public void CaptureSystem()
 	{
-		_signalDispatcher.DispatchSystemFactionChanged(_targetStarSystem, factionChosen);
+		_signalDispatcher.DispatchSystemFactionChanged(_targetStarSystem, _localPlayerManager.PlayerFactionString);
 	}
 
 	public class Factory : Factory<StarSystemController, SystemHUDUI> {}
