@@ -24,6 +24,7 @@ public class GameInstaller : MonoInstaller<GameInstaller>
         Container.BindSignal<Signals.SystemFactionChanged>();
         Container.BindSignal<Signals.PlayerJoined>();
         Container.BindSignal<Signals.PlayerDeparted>();
+        Container.BindSignal<Signals.FatalError>();
 
         Container.BindAllInterfacesAndSelf<CameraHandler>().To<CameraHandler>().AsSingle();
         Container.BindAllInterfacesAndSelf<MouseHandler>().To<MouseHandler>().AsSingle();
@@ -33,6 +34,7 @@ public class GameInstaller : MonoInstaller<GameInstaller>
         Container.BindFactory<PlayerHUDUI, PlayerHUDUI.Factory>().FromPrefab(_settings.PlayerHUDPrefab);
         Container.BindFactory<PlayerController, PlayerCardUI, PlayerCardUI.Factory>().FromPrefab(_settings.PlayerCardPrefab);
         Container.BindFactory<StarSystemController, SystemHUDUI, SystemHUDUI.Factory>().FromPrefab(_settings.SystemHUDPrefab);
+        Container.BindFactory<string, ErrorModalUI, ErrorModalUI.Factory>().FromPrefab(_settings.ErrorModalPrefab);
 
         Container.BindCommand<MoveCameraToPositionCmd, Vector3>().To<CameraHandler>(x => x.StartGlide).AsSingle();
         Container.BindCommand<ShowClickCoordinatesCmd, double, double>().To<UIManager>(x => x.UpdateCoordsUI).AsSingle();
@@ -48,5 +50,6 @@ public class GameInstaller : MonoInstaller<GameInstaller>
         public GameObject PlayerHUDPrefab;
         public GameObject PlayerCardPrefab;
         public GameObject SystemHUDPrefab;
+        public GameObject ErrorModalPrefab;
     }
 }

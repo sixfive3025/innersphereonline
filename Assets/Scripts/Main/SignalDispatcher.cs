@@ -7,6 +7,7 @@ public static class Signals {
 	public class SystemFactionChanged : Signal<SystemFactionChanged,GameObject,string> {}
 	public class PlayerJoined : Signal<PlayerJoined,PlayerController> {}
 	public class PlayerDeparted : Signal<PlayerDeparted,PlayerController> {}
+	public class FatalError : Signal<FatalError,string> {}
 }
 
 public class SignalDispatcher {
@@ -15,16 +16,19 @@ public class SignalDispatcher {
 	private Signals.SystemFactionChanged _systemFactionChangedSignal;
 	private Signals.PlayerJoined _playerJoinedSignal;
 	private Signals.PlayerDeparted _playerDepartedSignal;
+	private Signals.FatalError _fatalErrorSignal;
 
 	public SignalDispatcher(Signals.FactionSelected factionSelectedSignal,
 							Signals.SystemFactionChanged systemFactionChangedSignal,
 							Signals.PlayerJoined playerJoinedSignal,
-							Signals.PlayerDeparted playerDepartedSignal) 
+							Signals.PlayerDeparted playerDepartedSignal,
+							Signals.FatalError fatalErrorSignal) 
 	{
 		_factionSelectedSignal = factionSelectedSignal;
 		_systemFactionChangedSignal = systemFactionChangedSignal;
 		_playerJoinedSignal = playerJoinedSignal;
 		_playerDepartedSignal = playerDepartedSignal;
+		_fatalErrorSignal = fatalErrorSignal;
 	}
 
 	public void DispatchFactionSelected( string chosenFaction, string playerName )
@@ -45,5 +49,10 @@ public class SignalDispatcher {
 	public void DispatchPlayerDeparted( PlayerController player )
 	{
 		_playerDepartedSignal.Fire(player);
+	}
+
+	public void DispatchFatalError( string fatalError )
+	{
+		_fatalErrorSignal.Fire(fatalError);
 	}
 }

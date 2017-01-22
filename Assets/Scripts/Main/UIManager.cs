@@ -12,11 +12,12 @@ public class UIManager : ITickable, IInitializable, IDisposable {
 	readonly ShowCoordsUI.Factory _showCoordsFactory;
 	readonly PlayerHUDUI.Factory _playerListFactory;
 	readonly SystemHUDUI.Factory _systemHUDFactory;
+	readonly ErrorModalUI.Factory _errorModalFactory;
 	
 	private Signals.PlayerJoined _playerJoinedSignal;
 	private Signals.PlayerDeparted _playerDepartedSignal;
 
-	enum UIStates { Nothing, PickFaction, Playing };
+	enum UIStates { Nothing, PickFaction, Playing, Error };
 	private UIStates _uiState = UIStates.Nothing;
 
 	private FactionPickerUI _factionUI;
@@ -29,6 +30,7 @@ public class UIManager : ITickable, IInitializable, IDisposable {
 					  ShowCoordsUI.Factory showCoordsFactory,
 					  PlayerHUDUI.Factory playerListFactory,
 					  SystemHUDUI.Factory systemHUDFactory,
+					  ErrorModalUI.Factory errorModalFactory,
 					  Signals.PlayerJoined playerJoinedSignal,
 					  Signals.PlayerDeparted playerDepartedSignal )
 	{
@@ -37,6 +39,7 @@ public class UIManager : ITickable, IInitializable, IDisposable {
 		_showCoordsFactory = showCoordsFactory;
 		_playerListFactory = playerListFactory;
 		_systemHUDFactory = systemHUDFactory;
+		_errorModalFactory = errorModalFactory;
 
 		_playerJoinedSignal = playerJoinedSignal;
 		_playerDepartedSignal = playerDepartedSignal;
@@ -73,6 +76,14 @@ public class UIManager : ITickable, IInitializable, IDisposable {
 					resetUIState();
 					if ( _settings.ShowCoordinatesOnClick) _showCoodsUI = _showCoordsFactory.Create();
 					_uiState = UIStates.Playing;
+				}
+				break;
+			case GameStates.Error:
+				if ( _uiState != UIStates.Error )
+				{
+					// User must quit the application to get out of this state :(
+					_errorModalFactory.Create(_gameController.LastErrorMessage);
+					_uiState = UIStates.Error;
 				}
 				break;
 		}

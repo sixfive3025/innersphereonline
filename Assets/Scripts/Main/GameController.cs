@@ -11,7 +11,7 @@ public enum GameStates
 	SelectingFaction,
 	OfflineMode,
 	Playing,
-	Disconnected,
+	Error,
 	DedicatedServer
 }
 
@@ -27,16 +27,19 @@ public class GameController : IInitializable, IDisposable, ITickable {
 	readonly MouseHandler _mouseHandler;
 
 	Signals.FactionSelected _factionSelectedSignal;
+	Signals.FatalError _fatalErrorSignal;
 
 	private GameStates _state = GameStates.Startup;
 	public GameStates State 
 	{
 		get { return _state; }
 	}
+	public string LastErrorMessage = "";
 
 	public GameController( InnerSphereBuilder isBuilder, ISONetworkManager networkManager, 
 			LocalPlayerManager localPlayerManager, CameraHandler cameraHandler,
-			MouseHandler mouseHandler, Signals.FactionSelected factionSelectedSignal )
+			MouseHandler mouseHandler, Signals.FactionSelected factionSelectedSignal,
+			Signals.FatalError fatalErrorSignal )
 	{
 		_isBuilder = isBuilder;
 		_networkManager = networkManager;
@@ -44,16 +47,19 @@ public class GameController : IInitializable, IDisposable, ITickable {
 		_cameraHandler = cameraHandler;
 		_mouseHandler = mouseHandler;
 		_factionSelectedSignal = factionSelectedSignal;
+		_fatalErrorSignal = fatalErrorSignal;
 	}
 
 	public void Initialize () 
 	{
 		_factionSelectedSignal += OnFactionSelected;
+		_fatalErrorSignal += OnFatalError;
 	}
 
 	public void Dispose ()
 	{
 		_factionSelectedSignal -= OnFactionSelected;
+		_fatalErrorSignal -= OnFatalError;
 	}
 	
 	void OnFactionSelected ( string factionChosen, string playerName )
@@ -62,6 +68,12 @@ public class GameController : IInitializable, IDisposable, ITickable {
 		_localPlayerManager.PlayerFactionString = factionChosen;
 		_networkManager.CreateISOPlayer();
 		_state = GameStates.Playing;
+	}
+
+	void OnFatalError ( string message )
+	{
+		LastErrorMessage = message;
+		_state = GameStates.Error;
 	}
 
 	public void Tick () 
@@ -87,7 +99,9 @@ public class GameController : IInitializable, IDisposable, ITickable {
 				_cameraHandler.CameraMovementEnabled = true;
 				_mouseHandler.MouseInputEnabled = true;
 				break;
-			case GameStates.Disconnected:
+			case GameStates.Error:
+				_cameraHandler.CameraMovementEnabled = false;
+				_mouseHandler.MouseInputEnabled = false;
 				break;
 			case GameStates.DedicatedServer:
 				break;

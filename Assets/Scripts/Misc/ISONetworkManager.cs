@@ -7,11 +7,9 @@ using Zenject;
 // Class based off: https://gist.github.com/green-coder/197b8d63adffbbb87aaa (Thank you, green-coder!)
 public class ISONetworkManager : NetworkManager, IInitializable {
 
-	[Inject]
-	DiContainer Container;
-
-	[Inject]
-	readonly Settings _settings;
+	[Inject] DiContainer Container;
+	[Inject] readonly Settings _settings;
+	[Inject] readonly SignalDispatcher _signalDispatcher;
 
 	// Used by our 'Zenject' custom spawn instantiation.
 	Dictionary<NetworkHash128, GameObject> assetIdToPrefab = new Dictionary<NetworkHash128, GameObject>();
@@ -82,8 +80,16 @@ public class ISONetworkManager : NetworkManager, IInitializable {
 	}
 
 	public override void OnClientConnect(NetworkConnection connection) {
+		base.OnClientConnect(connection);
 		SetChannelBuffers(connection);
 		if( ConnectDelegate != null ) ConnectDelegate();
+	}
+
+	public override void OnClientDisconnect(NetworkConnection connection) 
+	{
+		base.OnClientDisconnect(connection);
+		// No explicit player action allows disconnection, so assume it's an error
+		_signalDispatcher.DispatchFatalError("Disconnected from Server");
 	}
 
 	public override void OnStopClient() {
