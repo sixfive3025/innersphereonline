@@ -24,6 +24,8 @@ MonoBehaviour:
       type: 2}
     SystemHUDPrefab: {fileID: 1552152117999840, guid: e3164ffe84b7f554f8fb7a82403ee445,
       type: 2}
+    ErrorModalPrefab: {fileID: 1689376510927316, guid: 4f4e72cbc34fe36499a046841654a7f4,
+      type: 2}
   GameController:
     OfflineMode: 0
   UIManager:
@@ -58,7 +60,7 @@ MonoBehaviour:
       type: 2}
     ShowDummySystems: 0
   CameraHandler:
-    CameraDistanceMax: 50
-    CameraDistanceMin: -5000
+    MaxCameraDistance: 50
+    MinCameraDistance: -2500
     PanSpeed: 300
     GlideSpeedBase: 1.3

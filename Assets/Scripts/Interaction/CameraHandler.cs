@@ -64,7 +64,7 @@ public class CameraHandler : ITickable {
 		{
 			float cameraChange = scrolling * _settings.PanSpeed;
 			_cameraDistance += cameraChange;
-			if ( _cameraDistance < _settings.CameraDistanceMax && _cameraDistance > _settings.CameraDistanceMin )
+			if ( _cameraDistance < _settings.MaxCameraDistance && _cameraDistance > _settings.MinCameraDistance )
 				_camera.transform.Translate(new Vector3(0, 0, cameraChange));
 			else _cameraDistance -= cameraChange;
 		}
@@ -73,10 +73,10 @@ public class CameraHandler : ITickable {
 	[Serializable]
 	public class Settings
 	{
-		public float CameraDistanceMax = 50f;
-		public float CameraDistanceMin = -5000f;
-		public float PanSpeed = 300f;
-		public float GlideSpeedBase = 1.3F;
+		public float MaxCameraDistance;
+		public float MinCameraDistance;
+		public float PanSpeed;
+		public float GlideSpeedBase;
 	}
 	
 }
