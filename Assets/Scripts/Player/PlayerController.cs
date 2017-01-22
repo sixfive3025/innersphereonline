@@ -79,6 +79,7 @@ public class PlayerController : NetworkBehaviour, IDisposable {
 		_playerName = name;
 	}
 
+	public void Dispose()
 	{
 		_systemFactionChangedSignal -= TransferSystemFaction;
 		_signalDispatcher.DispatchPlayerDeparted(this);
