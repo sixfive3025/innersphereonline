@@ -60,7 +60,7 @@ MonoBehaviour:
       type: 2}
     ShowDummySystems: 0
   CameraHandler:
-    MaxCameraDistance: 50
-    MinCameraDistance: -2500
+    MaxCameraDistance: 500
+    MinCameraDistance: -2000
     PanSpeed: 300
     GlideSpeedBase: 1.3
