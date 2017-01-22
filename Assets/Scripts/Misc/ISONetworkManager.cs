@@ -5,14 +5,15 @@ using System.Collections.Generic;
 using Zenject;
 
 // Class based off: https://gist.github.com/green-coder/197b8d63adffbbb87aaa (Thank you, green-coder!)
-public class ISONetworkManager : NetworkManager, IInitializable {
+public class ISONetworkManager : NetworkManager, IInitializable, IDisposable {
 
-	[Inject] DiContainer Container;
+	[Inject] readonly DiContainer _container;
 	[Inject] readonly Settings _settings;
 	[Inject] readonly SignalDispatcher _signalDispatcher;
 
 	// Used by our 'Zenject' custom spawn instantiation.
-	Dictionary<NetworkHash128, GameObject> assetIdToPrefab = new Dictionary<NetworkHash128, GameObject>();
+	private Dictionary<NetworkHash128, GameObject> _assetIdToPrefab = new Dictionary<NetworkHash128, GameObject>();
+	private Dictionary<GameObject, IDisposable[]> _disposableSpawns = new Dictionary<GameObject, IDisposable[]>();
 
 	public delegate void ClientCallback();
 	public ClientCallback ConnectDelegate = null;
@@ -31,12 +32,12 @@ public class ISONetworkManager : NetworkManager, IInitializable {
 
 		// Preparation for registering our own spawn handlers.
 		playerPrefab = _settings.PlayerPrefab;
-		assetIdToPrefab[playerPrefab.GetComponent<NetworkIdentity>().assetId] = playerPrefab;
+		_assetIdToPrefab[playerPrefab.GetComponent<NetworkIdentity>().assetId] = playerPrefab;
 
 		spawnPrefabs.Add(_settings.StarSystemPrefab);
 
 		foreach (GameObject prefab in spawnPrefabs) {
-			assetIdToPrefab[prefab.GetComponent<NetworkIdentity>().assetId] = prefab;
+			_assetIdToPrefab[prefab.GetComponent<NetworkIdentity>().assetId] = prefab;
 		}
 
 		// Do not let the NetworkManager register the playerPrefab on the client, as the prefab instantiation
@@ -70,7 +71,7 @@ public class ISONetworkManager : NetworkManager, IInitializable {
 
 	// On the server, we create the player object using Zenject's container.
 	public override void OnServerAddPlayer(NetworkConnection connection, short playerControllerId) {
-		GameObject player = Container.InstantiatePrefab(_settings.PlayerPrefab);
+		GameObject player = _container.InstantiatePrefab(_settings.PlayerPrefab);
 		NetworkServer.AddPlayerForConnection(connection, player, playerControllerId);
 	}
 
@@ -97,25 +98,53 @@ public class ISONetworkManager : NetworkManager, IInitializable {
 		UnregisterCustomSpawners();
 	}
 
+	// Cleanup all IDisposables that we created during spawning and never explicitly unspawned
+	public void Dispose()
+	{
+		foreach ( KeyValuePair<GameObject, IDisposable[]> disposables in _disposableSpawns )
+		{
+			for ( int x = 0 ; x < disposables.Value.Length; x++ )
+			{
+				disposables.Value[x].Dispose();
+			}
+		}
+	}
+
 	private void RegisterCustomSpawners() {
-		foreach (NetworkHash128 assetId in assetIdToPrefab.Keys) {
+		foreach (NetworkHash128 assetId in _assetIdToPrefab.Keys) {
 			ClientScene.RegisterSpawnHandler(assetId, Spawn, UnSpawn);
 		}
 	}
 
 	private void UnregisterCustomSpawners() {
-		foreach (NetworkHash128 assetId in assetIdToPrefab.Keys) {
+		foreach (NetworkHash128 assetId in _assetIdToPrefab.Keys) {
 			ClientScene.UnregisterSpawnHandler(assetId);
 		}
 	}
 
 	// On the client, instantiate the prefab using Zenject's container.
 	private GameObject Spawn(Vector3 position, NetworkHash128 assetId) {
-		return Container.InstantiatePrefab(assetIdToPrefab[assetId]);
+		GameObject spawnedGameObject = _container.InstantiatePrefab(_assetIdToPrefab[assetId]);
+		
+		IDisposable[] disposables = spawnedGameObject.GetComponentsInChildren<IDisposable>();
+		if ( disposables != null ) _disposableSpawns.Add(spawnedGameObject, disposables);
+
+		return spawnedGameObject;
 	}
 
 	// On the client, destroy the game object.
+	// Make sure all IDisposable operations run on the GameObject first
 	private void UnSpawn(GameObject spawned) {
+		IDisposable[] disposables = _disposableSpawns[spawned];
+		if (disposables != null)
+		{
+			for ( int x = 0 ; x < disposables.Length; x++ )
+			{
+				disposables[x].Dispose();
+			}
+			_disposableSpawns.Remove(spawned);
+		}
+
 		Destroy(spawned.gameObject);
 	}
 	

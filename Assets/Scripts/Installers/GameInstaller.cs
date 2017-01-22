@@ -15,6 +15,7 @@ public class GameInstaller : MonoInstaller<GameInstaller>
         Container.BindAllInterfacesAndSelf<GameController>().To<GameController>().AsSingle();
         Container.Bind<ISONetworkManager>().FromGameObject().WithGameObjectName(NAME_NetworkObj).AsSingle();
         Container.Bind<IInitializable>().To<ISONetworkManager>().FromGameObject().WithGameObjectName(NAME_NetworkObj).AsSingle();
+        Container.Bind<IDisposable>().To<ISONetworkManager>().FromGameObject().WithGameObjectName(NAME_NetworkObj).AsSingle();
         Container.BindAllInterfacesAndSelf<LocalPlayerManager>().To<LocalPlayerManager>().AsSingle();
         Container.BindAllInterfacesAndSelf<UIManager>().To<UIManager>().AsSingle();
         Container.BindAllInterfacesAndSelf<InnerSphereBuilder>().To<InnerSphereBuilder>().FromGameObject().WithGameObjectName(NAME_InnerSphereObj);

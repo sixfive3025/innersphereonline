@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.Networking;
 using Zenject;
 
-public class PlayerController : NetworkBehaviour {
+public class PlayerController : NetworkBehaviour, IDisposable {
 
 	[SyncVar(hook="SyncPlayerName")] 
 	public string _playerName;
@@ -78,7 +79,6 @@ public class PlayerController : NetworkBehaviour {
 		_playerName = name;
 	}
 
-	void OnDestroy()
 	{
 		_systemFactionChangedSignal -= TransferSystemFaction;
 		_signalDispatcher.DispatchPlayerDeparted(this);
