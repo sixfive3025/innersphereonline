@@ -12,13 +12,13 @@ public class GameInstaller : MonoInstaller<GameInstaller>
 
     public override void InstallBindings()
     {
-        Container.BindAllInterfacesAndSelf<GameController>().To<GameController>().AsSingle();
+        Container.BindAllInterfacesAndSelfTo<GameController>().To<GameController>().AsSingle();
         Container.Bind<ISONetworkManager>().FromGameObject().WithGameObjectName(NAME_NetworkObj).AsSingle();
         Container.Bind<IInitializable>().To<ISONetworkManager>().FromGameObject().WithGameObjectName(NAME_NetworkObj).AsSingle();
         Container.Bind<IDisposable>().To<ISONetworkManager>().FromGameObject().WithGameObjectName(NAME_NetworkObj).AsSingle();
-        Container.BindAllInterfacesAndSelf<LocalPlayerManager>().To<LocalPlayerManager>().AsSingle();
-        Container.BindAllInterfacesAndSelf<UIManager>().To<UIManager>().AsSingle();
-        Container.BindAllInterfacesAndSelf<InnerSphereBuilder>().To<InnerSphereBuilder>().FromGameObject().WithGameObjectName(NAME_InnerSphereObj);
+        Container.BindAllInterfacesAndSelfTo<LocalPlayerManager>().To<LocalPlayerManager>().AsSingle();
+        Container.BindAllInterfacesAndSelfTo<UIManager>().To<UIManager>().AsSingle();
+        Container.BindAllInterfacesAndSelfTo<InnerSphereBuilder>().To<InnerSphereBuilder>().FromGameObject().WithGameObjectName(NAME_InnerSphereObj);
 
         Container.Bind<SignalDispatcher>().To<SignalDispatcher>().AsSingle();
         Container.BindSignal<Signals.FactionSelected>();
@@ -27,8 +27,8 @@ public class GameInstaller : MonoInstaller<GameInstaller>
         Container.BindSignal<Signals.PlayerDeparted>();
         Container.BindSignal<Signals.FatalError>();
 
-        Container.BindAllInterfacesAndSelf<CameraHandler>().To<CameraHandler>().AsSingle();
-        Container.BindAllInterfacesAndSelf<MouseHandler>().To<MouseHandler>().AsSingle();
+        Container.BindAllInterfacesAndSelfTo<CameraHandler>().To<CameraHandler>().AsSingle();
+        Container.BindAllInterfacesAndSelfTo<MouseHandler>().To<MouseHandler>().AsSingle();
 
         Container.BindFactory<FactionPickerUI, FactionPickerUI.Factory>().FromPrefab(_settings.FactionPickerPrefab);
         Container.BindFactory<ShowCoordsUI, ShowCoordsUI.Factory>().FromPrefab(_settings.ShowCoordsPrefab);
@@ -37,8 +37,8 @@ public class GameInstaller : MonoInstaller<GameInstaller>
         Container.BindFactory<StarSystemController, SystemHUDUI, SystemHUDUI.Factory>().FromPrefab(_settings.SystemHUDPrefab);
         Container.BindFactory<string, ErrorModalUI, ErrorModalUI.Factory>().FromPrefab(_settings.ErrorModalPrefab);
 
-        Container.BindCommand<MoveCameraToPositionCmd, Vector3>().To<CameraHandler>(x => x.StartGlide).AsSingle();
-        Container.BindCommand<ShowClickCoordinatesCmd, double, double>().To<UIManager>(x => x.UpdateCoordsUI).AsSingle();
+        Container.BindSignal<Vector3, MoveCameraToPositionCmd>().To<CameraHandler>(x => x.StartGlide).AsSingle();
+        Container.BindSignal<double, double, ShowClickCoordinatesCmd>().To<UIManager>(x => x.UpdateCoordsUI).AsSingle();
     }
 
     [Serializable]

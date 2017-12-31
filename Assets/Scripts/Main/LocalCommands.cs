@@ -5,5 +5,5 @@ public class LocalCommands {
 
 }
 
-public class MoveCameraToPositionCmd : Command<Vector3> { }
-public class ShowClickCoordinatesCmd : Command<double, double> { }
+public class MoveCameraToPositionCmd : Signal<MoveCameraToPositionCmd, Vector3> { }
+public class ShowClickCoordinatesCmd : Signal<ShowClickCoordinatesCmd, double, double> { }
