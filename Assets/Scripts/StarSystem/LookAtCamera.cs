@@ -24,7 +24,7 @@ public class LookAtCamera : MonoBehaviour {
 			return;
 		else _lastCameraPos =_camera.transform.position;
 
-		transform.LookAt(_camera.transform);
-		transform.Rotate( 0, 180, 0);
+		//transform.LookAt(_camera.transform);
+		//transform.Rotate( 0, 180, 0);
 	}
 }

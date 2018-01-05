@@ -12,30 +12,32 @@ public class GameInstaller : MonoInstaller<GameInstaller>
 
     public override void InstallBindings()
     {
-        Container.BindAllInterfacesAndSelfTo<GameController>().To<GameController>().AsSingle();
-        Container.Bind<ISONetworkManager>().FromGameObject().WithGameObjectName(NAME_NetworkObj).AsSingle();
-        Container.Bind<IInitializable>().To<ISONetworkManager>().FromGameObject().WithGameObjectName(NAME_NetworkObj).AsSingle();
-        Container.Bind<IDisposable>().To<ISONetworkManager>().FromGameObject().WithGameObjectName(NAME_NetworkObj).AsSingle();
-        Container.BindAllInterfacesAndSelfTo<LocalPlayerManager>().To<LocalPlayerManager>().AsSingle();
-        Container.BindAllInterfacesAndSelfTo<UIManager>().To<UIManager>().AsSingle();
-        Container.BindAllInterfacesAndSelfTo<InnerSphereBuilder>().To<InnerSphereBuilder>().FromGameObject().WithGameObjectName(NAME_InnerSphereObj);
+        Container.BindInterfacesAndSelfTo<GameController>().AsSingle();
+        Container.Bind<ISONetworkManager>().FromNewComponentOnNewGameObject().WithGameObjectName(NAME_NetworkObj).AsSingle();
+        Container.Bind<IInitializable>().To<ISONetworkManager>().FromNewComponentOnNewGameObject().WithGameObjectName(NAME_NetworkObj).AsSingle();
+        Container.Bind<IDisposable>().To<ISONetworkManager>().FromNewComponentOnNewGameObject().WithGameObjectName(NAME_NetworkObj).AsSingle();
+        Container.BindInterfacesAndSelfTo<LocalPlayerManager>().AsSingle();
+        Container.BindInterfacesAndSelfTo<UIManager>().AsSingle();
+        Container.BindInterfacesAndSelfTo<InnerSphereBuilder>().FromNewComponentOnNewGameObject().WithGameObjectName(NAME_InnerSphereObj).AsSingle();
 
         Container.Bind<SignalDispatcher>().To<SignalDispatcher>().AsSingle();
-        Container.BindSignal<Signals.FactionSelected>();
-        Container.BindSignal<Signals.SystemFactionChanged>();
-        Container.BindSignal<Signals.PlayerJoined>();
-        Container.BindSignal<Signals.PlayerDeparted>();
-        Container.BindSignal<Signals.FatalError>();
+        Container.DeclareSignal<Signals.FactionSelected>();
+        Container.DeclareSignal<Signals.SystemFactionChanged>();
+        Container.DeclareSignal<Signals.PlayerJoined>();
+        Container.DeclareSignal<Signals.PlayerDeparted>();
+        Container.DeclareSignal<Signals.FatalError>();
+        Container.DeclareSignal<MoveCameraToPositionCmd>();
+        Container.DeclareSignal<ShowClickCoordinatesCmd>();
 
-        Container.BindAllInterfacesAndSelfTo<CameraHandler>().To<CameraHandler>().AsSingle();
-        Container.BindAllInterfacesAndSelfTo<MouseHandler>().To<MouseHandler>().AsSingle();
+        Container.BindInterfacesAndSelfTo<CameraHandler>().AsSingle();
+        Container.BindInterfacesAndSelfTo<MouseHandler>().AsSingle();
 
-        Container.BindFactory<FactionPickerUI, FactionPickerUI.Factory>().FromPrefab(_settings.FactionPickerPrefab);
-        Container.BindFactory<ShowCoordsUI, ShowCoordsUI.Factory>().FromPrefab(_settings.ShowCoordsPrefab);
-        Container.BindFactory<PlayerHUDUI, PlayerHUDUI.Factory>().FromPrefab(_settings.PlayerHUDPrefab);
-        Container.BindFactory<PlayerController, PlayerCardUI, PlayerCardUI.Factory>().FromPrefab(_settings.PlayerCardPrefab);
-        Container.BindFactory<StarSystemController, SystemHUDUI, SystemHUDUI.Factory>().FromPrefab(_settings.SystemHUDPrefab);
-        Container.BindFactory<string, ErrorModalUI, ErrorModalUI.Factory>().FromPrefab(_settings.ErrorModalPrefab);
+        Container.BindFactory<FactionPickerUI, FactionPickerUI.Factory>().FromComponentInNewPrefab(_settings.FactionPickerPrefab);
+        Container.BindFactory<ShowCoordsUI, ShowCoordsUI.Factory>().FromComponentInNewPrefab(_settings.ShowCoordsPrefab);
+        Container.BindFactory<PlayerHUDUI, PlayerHUDUI.Factory>().FromComponentInNewPrefab(_settings.PlayerHUDPrefab);
+        Container.BindFactory<PlayerController, PlayerCardUI, PlayerCardUI.Factory>().FromComponentInNewPrefab(_settings.PlayerCardPrefab);
+        Container.BindFactory<StarSystemController, SystemHUDUI, SystemHUDUI.Factory>().FromComponentInNewPrefab(_settings.SystemHUDPrefab);
+        Container.BindFactory<string, ErrorModalUI, ErrorModalUI.Factory>().FromComponentInNewPrefab(_settings.ErrorModalPrefab);
 
         Container.BindSignal<Vector3, MoveCameraToPositionCmd>().To<CameraHandler>(x => x.StartGlide).AsSingle();
         Container.BindSignal<double, double, ShowClickCoordinatesCmd>().To<UIManager>(x => x.UpdateCoordsUI).AsSingle();

@@ -66,42 +66,7 @@ public class StarSystemController : NetworkBehaviour {
 	// Set the correct faction material when it changes ownership
 	public void OnFactionChange () 
 	{
-		GameObject territory = GetComponent<TerritoryController>().TerritoryAttached;
-
-		if ( territory != null )
-		{
-			string materialName = "";
-			FactionController factCtrl = GetComponent<FactionController>();
-			Renderer rend = territory.GetComponent<Renderer>();
-
-			switch (factCtrl.CurrentFaction)
-			{
-				case Faction.Steiner:
-					materialName = "Materials/SteinerRegion";
-					break;
-				case Faction.Marik:
-					materialName = "Materials/MarikRegion";
-					break;
-				case Faction.Liao:
-					materialName = "Materials/LiaoRegion";
-					break;
-				case Faction.Davion:
-					materialName = "Materials/DavionRegion";
-					break;
-				case Faction.Kurita:
-					materialName = "Materials/KuritaRegion";
-					break;
-				case Faction.Comstar:
-					materialName = "Materials/ComstarRegion";
-					break;
-				default:
-					rend.enabled = false;
-					return;
-			}
-
-			rend.material = Resources.Load(materialName, typeof(Material)) as Material;
-			if ( !rend.enabled ) rend.enabled = true;
-		}
+		GetComponent<TerritoryController>().ChangeFaction(GetComponent<FactionController>().CurrentFaction);
 	}
 	
 	[Serializable]

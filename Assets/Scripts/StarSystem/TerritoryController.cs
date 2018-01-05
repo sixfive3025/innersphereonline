@@ -7,6 +7,8 @@ public class TerritoryController : NetworkBehaviour {
 
 	public GameObject TerritoryAttached = null;
 	private bool _createdTerritory = false;
+	private Material _material = null;
+	private Material _materialSelected = null;
 
 	public VectorSync Points = new VectorSync();
 	
@@ -51,6 +53,55 @@ public class TerritoryController : NetworkBehaviour {
 			SendMessage( "OnFactionChange" );
 			_createdTerritory = true;
 		}
+	}
+
+	public void ChangeFaction( Faction newFaction )
+	{
+		if ( TerritoryAttached != null )
+		{
+			string materialName = "";
+			Renderer rend = TerritoryAttached.GetComponent<Renderer>();
+
+			switch (newFaction)
+			{
+				case Faction.Steiner:
+					materialName = "Materials/SteinerRegion";
+					break;
+				case Faction.Marik:
+					materialName = "Materials/MarikRegion";
+					break;
+				case Faction.Liao:
+					materialName = "Materials/LiaoRegion";
+					break;
+				case Faction.Davion:
+					materialName = "Materials/DavionRegion";
+					break;
+				case Faction.Kurita:
+					materialName = "Materials/KuritaRegion";
+					break;
+				case Faction.Comstar:
+					materialName = "Materials/ComstarRegion";
+					break;
+				default:
+					rend.enabled = false;
+					return;
+			}
+
+			_material = Resources.Load(materialName, typeof(Material)) as Material;
+			_materialSelected = Resources.Load(materialName + "Selected", typeof(Material)) as Material;
+			rend.material = _material;
+			if ( !rend.enabled ) rend.enabled = true;
+		}
+	}
+
+	public void SystemSelected()
+	{
+		TerritoryAttached.GetComponent<Renderer>().material = _materialSelected;
+	}
+
+	public void SystemDeselected()
+	{
+		TerritoryAttached.GetComponent<Renderer>().material = _material;
 	}
 
 }

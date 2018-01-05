@@ -13,11 +13,13 @@ public class SystemSelection : Interaction {
 	public override void Deselect()
 	{
 		_uiManager.SystemDeselected(gameObject.GetComponent<StarSystemController>());
+		gameObject.GetComponent<TerritoryController>().SystemDeselected();
 	}
 
 	public override void Select()
 	{
 		_uiManager.SystemSelected(gameObject.GetComponent<StarSystemController>());
+		gameObject.GetComponent<TerritoryController>().SystemSelected();
 	}
 	
 }

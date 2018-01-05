@@ -36,7 +36,7 @@ public class MouseHandler : ITickable {
 			if ( _plane.Raycast(mouseRay, out mDist) )
 			{
 				Vector3 m3Hit = mouseRay.GetPoint (mDist);
-				_showCoordsCmd.Execute( System.Math.Round(m3Hit.x/3,2), System.Math.Round(m3Hit.z/3,2) );
+				_showCoordsCmd.Fire( System.Math.Round(m3Hit.x/3,2), System.Math.Round(m3Hit.z/3,2) );
 			}
 		}
 
@@ -53,7 +53,7 @@ public class MouseHandler : ITickable {
 				
 				Vector3 v3Delta = (v3Hit - m3Hit) * -1;
 				
-				_moveCameraCmd.Execute( _camera.transform.position + v3Delta);
+				_moveCameraCmd.Fire( _camera.transform.position + v3Delta);
 			}
 			return;
 		}
