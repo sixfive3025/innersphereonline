@@ -13,16 +13,19 @@ public class PlayerController : NetworkBehaviour, IDisposable {
 
 	private SignalDispatcher _signalDispatcher;
 	private Signals.SystemFactionChanged _systemFactionChangedSignal;
+	private Signals.RegimentMoved _regimentMovedSignal;
 
 	public delegate void NotifyPlayerNameChanged();
 	public NotifyPlayerNameChanged NotifyPlayerNameChangeDelegate = null;
 
 	[Inject]
 	public void Construct(SignalDispatcher signalDispatcher, 
-						  Signals.SystemFactionChanged systemFactionChangedSignal ) 
+						  Signals.SystemFactionChanged systemFactionChangedSignal,
+						  Signals.RegimentMoved regimentMovedSignal ) 
 	{
 		_signalDispatcher = signalDispatcher;
 		_systemFactionChangedSignal = systemFactionChangedSignal;
+		_regimentMovedSignal = regimentMovedSignal;
 	}
 
 	public string PlayerName
@@ -45,6 +48,7 @@ public class PlayerController : NetworkBehaviour, IDisposable {
 	void Start () 
 	{
 		_systemFactionChangedSignal += TransferSystemFaction;
+		_regimentMovedSignal += RegimentMoved;
 
 		if (isLocalPlayer)
 		{
@@ -71,6 +75,17 @@ public class PlayerController : NetworkBehaviour, IDisposable {
 	public void CmdTransferSystemFaction( GameObject system, string newFaction )
 	{
 		system.GetComponent<FactionController>().SetFromString(newFaction);
+	}
+
+	public void RegimentMoved( GameObject regiment, string newLocation )
+	{
+		CmdRegimentMoved(regiment, newLocation);
+	}
+
+	[Command]
+	public void CmdRegimentMoved( GameObject regiment, string newLocation )
+	{
+		regiment.GetComponent<RegimentController>().LocationChange(newLocation);
 	}
 
 	[Command]

@@ -8,21 +8,29 @@ public class GameInstaller : MonoInstaller<GameInstaller>
     Settings _settings = null;
 
     private const string NAME_InnerSphereObj = "InnerSphereBuilder";
+    private const string NAME_RegimentObj = "RegimentBuilder";
     private const string NAME_NetworkObj = "Network";
 
     public override void InstallBindings()
     {
         Container.BindInterfacesAndSelfTo<GameController>().AsSingle();
+        Container.BindInterfacesAndSelfTo<SystemRegistry>().AsSingle();
         Container.Bind<ISONetworkManager>().FromNewComponentOnNewGameObject().WithGameObjectName(NAME_NetworkObj).AsSingle();
         Container.Bind<IInitializable>().To<ISONetworkManager>().FromNewComponentOnNewGameObject().WithGameObjectName(NAME_NetworkObj).AsSingle();
         Container.Bind<IDisposable>().To<ISONetworkManager>().FromNewComponentOnNewGameObject().WithGameObjectName(NAME_NetworkObj).AsSingle();
         Container.BindInterfacesAndSelfTo<LocalPlayerManager>().AsSingle();
         Container.BindInterfacesAndSelfTo<UIManager>().AsSingle();
         Container.BindInterfacesAndSelfTo<InnerSphereBuilder>().FromNewComponentOnNewGameObject().WithGameObjectName(NAME_InnerSphereObj).AsSingle();
+        Container.BindInterfacesAndSelfTo<SharedCurveTracker>().AsSingle();
+
+        Container.BindInterfacesAndSelfTo<RegimentBuilder>().FromNewComponentOnNewGameObject().WithGameObjectName(NAME_RegimentObj).AsSingle();
+        Container.BindFactory<RegimentController, RegimentController.Factory>().FromComponentInNewPrefab(_settings.RegimentPrefab);
+        Container.BindFactory<RegimentController, RegimentChit, RegimentChit.Factory>().FromComponentInNewPrefab(_settings.RegimentChitPrefab);
 
         Container.Bind<SignalDispatcher>().To<SignalDispatcher>().AsSingle();
         Container.DeclareSignal<Signals.FactionSelected>();
         Container.DeclareSignal<Signals.SystemFactionChanged>();
+        Container.DeclareSignal<Signals.RegimentMoved>();
         Container.DeclareSignal<Signals.PlayerJoined>();
         Container.DeclareSignal<Signals.PlayerDeparted>();
         Container.DeclareSignal<Signals.FatalError>();
@@ -54,5 +62,7 @@ public class GameInstaller : MonoInstaller<GameInstaller>
         public GameObject PlayerCardPrefab;
         public GameObject SystemHUDPrefab;
         public GameObject ErrorModalPrefab;
+        public GameObject RegimentPrefab;
+        public GameObject RegimentChitPrefab;
     }
 }

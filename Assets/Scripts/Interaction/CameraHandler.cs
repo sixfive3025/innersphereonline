@@ -62,7 +62,12 @@ public class CameraHandler : ITickable {
 		float scrolling = Input.GetAxis("Mouse ScrollWheel");
 		if ( scrolling != 0 )
 		{
-			float cameraChange = scrolling * _settings.PanSpeed;
+			// Use smaller scroll incements the further in you've zoomed
+			float invPercentScrolled = 1 - ((_cameraDistance - _settings.MinCameraDistance) / (_settings.MaxCameraDistance - _settings.MinCameraDistance));
+			float scrollModifier = invPercentScrolled > 0.05 ? Mathf.Exp( invPercentScrolled ) : Mathf.Exp( invPercentScrolled )*.5f;
+			float cameraChange = scrolling * _settings.PanSpeed * scrollModifier;
+			//Debug.Log( invPercentScrolled + ":" + scrollModifier + ":" + cameraChange + ":" + _cameraDistance);
+
 			_cameraDistance += cameraChange;
 			if ( _cameraDistance < _settings.MaxCameraDistance && _cameraDistance > _settings.MinCameraDistance )
 				_camera.transform.Translate(new Vector3(0, 0, cameraChange));

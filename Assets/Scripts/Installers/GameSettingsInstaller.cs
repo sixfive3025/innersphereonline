@@ -11,6 +11,7 @@ public class GameSettingsInstaller : ScriptableObjectInstaller<GameSettingsInsta
     public StarSystemController.Settings StarSystemController;
     public InnerSphereBuilder.Settings InnerSphereBuilder;
     public CameraHandler.Settings CameraHandler;
+    public FactionController.Settings FactionController;
 
     public override void InstallBindings()
     {
@@ -21,5 +22,6 @@ public class GameSettingsInstaller : ScriptableObjectInstaller<GameSettingsInsta
         Container.BindInstance(StarSystemController);
         Container.BindInstance(InnerSphereBuilder);
         Container.BindInstance(CameraHandler);
+        Container.BindInstance(FactionController);
     }
 }

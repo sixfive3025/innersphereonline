@@ -5,18 +5,29 @@ using Zenject;
 
 public class StarSystemController : NetworkBehaviour {
 
-	[SyncVar] public string StarName;
+	[SyncVar(hook = "OnChangeStarName")] public string StarName = "";
 
 	[Inject] Settings _settings;
 
 	// TODO: Seems like a bad dependency
 	[Inject] GameController _gameContoller;
 
+	[Inject] SystemRegistry _sysRegistry;
+
 	public void Start()
 	{
 		// Keep the scene hierarchy clean
 		transform.parent = GameObject.Find("SystemList").transform;
 		GetComponent<FactionController>().NotifyFactionChangedDelegate += OnFactionChange;
+
+		if ( StarName != "" ) OnChangeStarName( StarName );
+	}
+
+	void OnChangeStarName( string newStarName )
+	{
+		StarName = newStarName;
+		_sysRegistry.Register(StarName, gameObject);
+		gameObject.name = StarName;
 	}
 
 	public void LoadSystemPrefab()

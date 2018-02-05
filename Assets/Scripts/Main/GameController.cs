@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 using Zenject;
@@ -21,6 +22,7 @@ public class GameController : IInitializable, IDisposable, ITickable {
 	readonly Settings _settings;
 
 	readonly InnerSphereBuilder _isBuilder;
+	readonly RegimentBuilder _regimentBuilder;
 	readonly ISONetworkManager _networkManager;
 	readonly LocalPlayerManager _localPlayerManager;
 	readonly CameraHandler _cameraHandler;
@@ -36,12 +38,13 @@ public class GameController : IInitializable, IDisposable, ITickable {
 	}
 	public string LastErrorMessage = "";
 
-	public GameController( InnerSphereBuilder isBuilder, ISONetworkManager networkManager, 
+	public GameController( InnerSphereBuilder isBuilder, RegimentBuilder regimentBuilder, ISONetworkManager networkManager, 
 			LocalPlayerManager localPlayerManager, CameraHandler cameraHandler,
 			MouseHandler mouseHandler, Signals.FactionSelected factionSelectedSignal,
 			Signals.FatalError fatalErrorSignal )
 	{
 		_isBuilder = isBuilder;
+		_regimentBuilder = regimentBuilder;
 		_networkManager = networkManager;
 		_localPlayerManager = localPlayerManager;
 		_cameraHandler = cameraHandler;
@@ -87,7 +90,9 @@ public class GameController : IInitializable, IDisposable, ITickable {
 				{
 					StartClient();
 					// Cleanup because someone else is building the Inner Sphere
+					// Ugh. Don't like doing this. Again. Client doesn't need this in the first place.
 					GameObject.Destroy(_isBuilder.gameObject);
+					GameObject.Destroy(_regimentBuilder.gameObject);
 				}
 				break;
 			case GameStates.Connecting:
@@ -111,8 +116,6 @@ public class GameController : IInitializable, IDisposable, ITickable {
 		}	
 	}
 
-	
-
 	public bool IsHeadless() 
 	{
 		return SystemInfo.graphicsDeviceType == GraphicsDeviceType.Null;
@@ -127,18 +130,26 @@ public class GameController : IInitializable, IDisposable, ITickable {
 		Application.targetFrameRate = 20;
 		Application.runInBackground = true;
 
+		// Start the party!
 		_networkManager.StartServer();
 		_state = GameStates.DedicatedServer;
 		Debug.Log( "*** STARTED DEDICATED SERVER ***" );
 		_isBuilder.BuildSystems(true);
 		GameObject.Destroy(_isBuilder.gameObject); // One time use
+
+		_regimentBuilder.Build(true);
+		GameObject.Destroy(_regimentBuilder.gameObject);
 	}
 
 	void StartOfflineMode()
 	{
+		_state = GameStates.OfflineMode;
+
 		_isBuilder.BuildSystems(false);
 		GameObject.Destroy(_isBuilder.gameObject); // One time use
-		_state = GameStates.OfflineMode;
+
+		_regimentBuilder.Build(false);
+		GameObject.Destroy(_regimentBuilder.gameObject);
 	}
 
 	void OnClientConnect()

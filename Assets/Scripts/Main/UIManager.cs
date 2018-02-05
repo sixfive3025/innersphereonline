@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
@@ -16,6 +17,7 @@ public class UIManager : ITickable, IInitializable, IDisposable {
 	
 	private Signals.PlayerJoined _playerJoinedSignal;
 	private Signals.PlayerDeparted _playerDepartedSignal;
+	private Signals.RegimentMoved _regimentMovedSignal;
 
 	enum UIStates { Nothing, PickFaction, Playing, Error };
 	private UIStates _uiState = UIStates.Nothing;
@@ -24,6 +26,8 @@ public class UIManager : ITickable, IInitializable, IDisposable {
 	private ShowCoordsUI _showCoodsUI;
 	private PlayerHUDUI _playerList;
 	private SystemHUDUI _systemUI;
+	private RegimentController _selectedRegiment;
+	private HashSet<string> _regimentJumpable;
 
 	public UIManager( GameController gameController, 
 					  FactionPickerUI.Factory factionPickerFactory, 
@@ -32,7 +36,8 @@ public class UIManager : ITickable, IInitializable, IDisposable {
 					  SystemHUDUI.Factory systemHUDFactory,
 					  ErrorModalUI.Factory errorModalFactory,
 					  Signals.PlayerJoined playerJoinedSignal,
-					  Signals.PlayerDeparted playerDepartedSignal )
+					  Signals.PlayerDeparted playerDepartedSignal,
+					  Signals.RegimentMoved regimentMovedSignal )
 	{
 		_gameController = gameController;
 		_factionPickerFactory = factionPickerFactory;
@@ -43,6 +48,7 @@ public class UIManager : ITickable, IInitializable, IDisposable {
 
 		_playerJoinedSignal = playerJoinedSignal;
 		_playerDepartedSignal = playerDepartedSignal;
+		_regimentMovedSignal = regimentMovedSignal;
 	}
 
 	public void Initialize()
@@ -105,11 +111,30 @@ public class UIManager : ITickable, IInitializable, IDisposable {
 	public void SystemSelected( StarSystemController system )
 	{
 		_systemUI = _systemHUDFactory.Create(system);
+
+		if ( _selectedRegiment != null && _regimentJumpable.Contains(system.StarName))
+		{
+			_selectedRegiment.LocationChange(system.StarName);
+			_regimentMovedSignal.Fire(_selectedRegiment.gameObject, system.StarName);
+		}
+
+		_selectedRegiment = null;
 	}
 
 	public void SystemDeselected( StarSystemController system )
 	{
 		GameObject.Destroy( _systemUI.gameObject );
+	}
+
+	public void RegimentSelected( RegimentController regiment, HashSet<string> jumpable )
+	{
+		_selectedRegiment = regiment;
+		_regimentJumpable = jumpable;
+	}
+
+	public void RegimentDeselected( RegimentController regiment )
+	{
+		//_selectedRegiment = null;
 	}
 
 	public void UpdateCoordsUI( double x, double y)

@@ -1,5 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.Networking;
+using Zenject;
 
 public enum Faction { None, Davion, Kurita, Liao, Marik, Steiner, Comstar }; 
 
@@ -7,6 +9,7 @@ public class FactionController : NetworkBehaviour {
 	
 	[SyncVar(hook="SyncFactionChange")] 
 	public Faction _faction = Faction.None;
+	[Inject] Settings _settings;
 
 	public delegate void NotifyFactionChanged();
 	public NotifyFactionChanged NotifyFactionChangedDelegate = null;
@@ -33,17 +36,17 @@ public class FactionController : NetworkBehaviour {
 		switch (_faction)
 		{
 			case Faction.Davion:
-				return new Color(0.878f,0.89f,0f);
+				return _settings.DavionHouse;
 			case Faction.Kurita:
-				return new Color(1f,0f,0f);
+				return _settings.KuritaHouse;
 			case Faction.Liao:
-				return new Color(0.067f,0.836f,0f);
+				return _settings.LiaoHouse;
 			case Faction.Marik:
-				return new Color(1f,0f,0.859f);
+				return _settings.MarikHouse;
 			case Faction.Steiner:
-				return new Color(0f,0.537f,0.859f);
+				return _settings.SteinerHouse;
 			case Faction.Comstar:
-				return Color.white;
+				return _settings.ComstarHouse;
 			default:
 				return Color.cyan;
 		}
@@ -82,4 +85,20 @@ public class FactionController : NetworkBehaviour {
 		_faction = f;
 	}
 
+	[Serializable]
+	public class Settings
+	{
+		public Color DavionHouse;
+		public Color DavionMerc;
+		public Color KuritaHouse;
+		public Color KuritaMerc;
+		public Color LiaoHouse;
+		public Color LiaoMerc;
+		public Color MarikHouse;
+		public Color MarikMerc;
+		public Color SteinerHouse;
+		public Color SteinerMerc;
+		public Color ComstarHouse;
+		public Color ComstarMerc;
+	}
 }

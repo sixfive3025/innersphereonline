@@ -45,7 +45,6 @@ public class InnerSphereBuilder : NetworkBehaviour {
 	private float _mapHeight = 0;
 	private Delaunay.Voronoi _voro = null;
 	List<uint> _colors = new List<uint> ();
-
 	public void BuildSystems( bool buildOnServer ) 
 	{
 		TextAsset systemAsset = Resources.Load("stivessystems") as TextAsset;
@@ -66,8 +65,8 @@ public class InnerSphereBuilder : NetworkBehaviour {
 			// Skip badly formatted systems until we clean it all up
 			try
 			{
-				systemX = (Convert.ToSingle(systemLine[1])) * 3;
-				systemY = (Convert.ToSingle(systemLine[2])) * 3;
+				systemX = (Convert.ToSingle(systemLine[1])) * _settings.CoordinateMultiplier;
+				systemY = (Convert.ToSingle(systemLine[2])) * _settings.CoordinateMultiplier;
 				faction = systemLine[3];
 			}
 			catch ( FormatException ex ) 
@@ -230,5 +229,6 @@ public class InnerSphereBuilder : NetworkBehaviour {
 	{
 		public GameObject StarSystemPrefab;
 		public bool ShowDummySystems;
+		public int CoordinateMultiplier;
 	}
 }

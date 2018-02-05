@@ -35,6 +35,7 @@ public class ISONetworkManager : NetworkManager, IInitializable, IDisposable {
 		_assetIdToPrefab[playerPrefab.GetComponent<NetworkIdentity>().assetId] = playerPrefab;
 
 		spawnPrefabs.Add(_settings.StarSystemPrefab);
+		spawnPrefabs.Add(_settings.RegimentPrefab);
 
 		foreach (GameObject prefab in spawnPrefabs) {
 			_assetIdToPrefab[prefab.GetComponent<NetworkIdentity>().assetId] = prefab;
@@ -164,5 +165,6 @@ public class ISONetworkManager : NetworkManager, IInitializable, IDisposable {
 		public string ServerBindIP;
 		public GameObject PlayerPrefab;
 		public GameObject StarSystemPrefab;
+		public GameObject RegimentPrefab;
 	}
 }
