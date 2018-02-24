@@ -4,12 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
 using Zenject;
-using UnityEditor.Experimental.U2D.Animation.TriangleNet;
-using UnityEditor.Experimental.U2D.Animation.TriangleNet.Geometry;
-using UnityEditor.Experimental.U2D.Animation.TriangleNet.Tools;
-using UnityEditor.Experimental.U2D.Animation.TriangleNet.Data;
 
-public class InnerSphereBuilder : NetworkBehaviour {
+public class InnerSphereBuilderOrig : NetworkBehaviour {
 
 	private class StarSystem 
 	{
@@ -44,11 +40,11 @@ public class InnerSphereBuilder : NetworkBehaviour {
 	private List<Vector2> _mapPoints;
 	private List<StarSystem> _mapSystems;
 
-	// Triangle
-	private InputGeometry _inputPoints = new InputGeometry();
-	private UnityEditor.Experimental.U2D.Animation.TriangleNet.Mesh _inputMesh = new UnityEditor.Experimental.U2D.Animation.TriangleNet.Mesh( new Behavior() );
-	private Voronoi _newVoro = null;
-
+	// Voronoi
+	private float _mapWidth = 0;
+	private float _mapHeight = 0;
+	private Delaunay.Voronoi _voro = null;
+	List<uint> _colors = new List<uint> ();
 	public void BuildSystems( bool buildOnServer ) 
 	{
 		TextAsset systemAsset = Resources.Load("stivessystems") as TextAsset;
@@ -85,10 +81,8 @@ public class InnerSphereBuilder : NetworkBehaviour {
 			}
 
 			// Voronoi Build
+			_colors.Add (0);
 			_mapPoints.Add (new Vector2 (systemX, systemY));
-
-			_inputPoints.AddPoint( systemX, systemY );
-
 			if (systemX < minX) minX = systemX;
 			if (systemX > maxX) maxX = systemX;
 			if (systemY < minY) minY = systemY;
@@ -151,26 +145,17 @@ public class InnerSphereBuilder : NetworkBehaviour {
 			_mapSystems.Add( newSS );
 		}
 
-		// Triangle Generate
-		_inputMesh.Triangulate(_inputPoints);
-		_newVoro = new Voronoi( _inputMesh );
+		// Generate the map regions using Voronoi algorithm
+		_mapWidth = maxX-minX;
+		_mapHeight = maxY-minY;
+		_voro = new Delaunay.Voronoi (_mapPoints, _colors, new Rect (minX, minY, _mapWidth, _mapHeight));
 
-		// Do the stupid thing to test this
-		foreach ( VoronoiRegion reg in _newVoro.Regions )
+		for( int t = 0; t < _mapPoints.Count; t++ )
 		{
-			Vertex v = _inputMesh.vertices[reg.ID];
+			if ( !_settings.ShowDummySystems && _mapSystems[t].IsDummy ) continue; // Skip dummy systems
 
-			for( int t = 0; t < _mapPoints.Count; t++ )
-			{
-				if ( _mapPoints[t].x != v.x || _mapPoints[t].y != v.y ) continue;
-
-				if ( !_settings.ShowDummySystems && _mapSystems[t].IsDummy ) continue; // Skip dummy systems
-
-				List<Vector2> li = new List<Vector2>(reg.Vertices.Count);
-				foreach( Point bv in reg.Vertices )
-					li.Add( new Vector2( Convert.ToSingle(bv.x), Convert.ToSingle(bv.y) ) );
-				createRegion( li, _mapSystems[t], buildOnServer );
-			}
+			List<Vector2> li = _voro.Region(_mapPoints[t]);
+			createRegion( li, _mapSystems[t], buildOnServer );
 		}
 	}
 

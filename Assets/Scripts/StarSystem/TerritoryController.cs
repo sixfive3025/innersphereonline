@@ -14,10 +14,7 @@ public class TerritoryController : NetworkBehaviour {
 
 	public VectorSync Points = new VectorSync();
 
-	private Splinulator _splinulator = new Splinulator();
-
-	[Inject]
-	private SharedCurveTracker _curveTracker;
+	//private Splinulator _splinulator = new Splinulator();
 	
 	void Update () 
 	{
@@ -27,12 +24,17 @@ public class TerritoryController : NetworkBehaviour {
 		{
 			StarSystemController starCtrl = GetComponent<StarSystemController>();
 
-			// Pull the network synchronized points
-			Vector2[] earlyPoints = new Vector2[Points.Count];
-			Points.CopyTo(earlyPoints, 0);
+			Vector2[] newPoints = new Vector2[Points.Count];
+			Points.CopyTo(newPoints, 0);
 
+			// Pull the network synchronized points
+			// Vector2[] earlyPoints = new Vector2[Points.Count];
+			// Points.CopyTo(earlyPoints, 0);
+
+			/*
 			// Smooth those points out a bit
 			List<Vector2> latePoints = new List<Vector2>();
+			Vector2 lastPoint = earlyPoints[1];
 			for ( int i = 0; i < earlyPoints.Length; i++ )
 			{
 				Vector2[] calcPoints = new Vector2[4];
@@ -45,35 +47,19 @@ public class TerritoryController : NetworkBehaviour {
 				if ( (i+1) > (earlyPoints.Length-1) ) calcPoints[2] = earlyPoints[0];
 				else calcPoints[2] = earlyPoints[i+1];
 
-				SharedCurveTracker.PointPair pair = new SharedCurveTracker.PointPair();
-				pair.p1 = calcPoints[1];
-				pair.p2 = calcPoints[2];
-
-				try
-				{
-					List<Vector2> previouslyGenerated = _curveTracker.CurveLookup[pair];
-
-					if ( previouslyGenerated != null )
-					{
-						latePoints.AddRange( previouslyGenerated );
-						continue;
-					}
-				}
-				catch ( KeyNotFoundException ) {}
-
 				if ( (i+2) > earlyPoints.Length ) calcPoints[3] = earlyPoints[1];
 				else if ( (i+2) > (earlyPoints.Length-1) ) calcPoints[3] = earlyPoints[0];
 				else calcPoints[3] = earlyPoints[i+2];
 
 				List<Vector2> smoothPoints = _splinulator.CatmulRom( calcPoints );
+				lastPoint = smoothPoints[smoothPoints.Count-1];
 				smoothPoints.Remove(smoothPoints[smoothPoints.Count-1]); // remove duplicate first/last point
 				latePoints.AddRange( smoothPoints );
-				
-				_curveTracker.CurveLookup[pair] = smoothPoints;
 			}
+			*/
 
-			Vector2[] newPoints = new Vector2[latePoints.Count];
-			latePoints.CopyTo(newPoints, 0);
+			// Vector2[] newPoints = new Vector2[latePoints.Count];
+			// latePoints.CopyTo(newPoints, 0);
 
 			// Make triangles out of all those points
 			Triangulator tr = new Triangulator(newPoints);
