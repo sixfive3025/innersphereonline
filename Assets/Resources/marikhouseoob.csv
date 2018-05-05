@@ -21,36 +21,36 @@ Atrean Hussars,3,Regular,Ling,Indepdendent,atreanhussars,genericindependent
 30th Marik Militia,3,Regular,Wing,Marik Militia,marikmarikmilitia30,marikmarikmilitia
 31st Marik Militia,3,Green,Uhuru,Marik Militia,marikmarikmilitia31,marikmarikmilitia
 Mark Guard,3,Elite,Van Diemen,Indepdendent,marikguards,genericindependent
-Ducal Guard,3,Elite,Tamarind,Fusiliers of Oriente,,marikfusiliersoforiente
-1st Brigade,3,Elite,Griffith,Fusiliers of Oriente,,marikfusiliersoforiente
-2nd Brigade,3,Veteran,Maxwell,Fusiliers of Oriente,,marikfusiliersoforiente
-3rd Brigade,3,Veteran,Promised Land,Fusiliers of Oriente,,marikfusiliersoforiente
-4th Brigade,3,Regular,Oriente,Fusiliers of Oriente,,marikfusiliersoforiente
-5th Brigade,3,Regular,Sheridan,Fusiliers of Oriente,,marikfusiliersoforiente
-Iron Guards,3,Regular,Alula Australis,Protectorate Guard,,marikprotectorateguard
-Steel Guards,3,Green,Kosciusko,Protectorate Guard,,marikprotectorateguard
+Ducal Guard,3,Elite,Tamarind,Fusiliers of Oriente,ducalguard,marikfusiliersoforiente
+1st Brigade,3,Elite,Griffith,Fusiliers of Oriente,1stbrigade,marikfusiliersoforiente
+2nd Brigade,3,Veteran,Maxwell,Fusiliers of Oriente,2ndbrigade,marikfusiliersoforiente
+3rd Brigade,3,Veteran,Promised Land,Fusiliers of Oriente,3rdbrigade,marikfusiliersoforiente
+4th Brigade,3,Regular,Oriente,Fusiliers of Oriente,4thbrigade,marikfusiliersoforiente
+5th Brigade,3,Regular,Sheridan,Fusiliers of Oriente,5thbrigade,marikfusiliersoforiente
+Iron Guards,3,Regular,Alula Australis,Protectorate Guard,ironguard,marikprotectorateguard
+Steel Guards,3,Green,Kosciusko,Protectorate Guard,steelguard,marikprotectorateguard
 1st Sirian Lancers,3,Green,Pollux,Sirian Lancers,sirianlancers1,mariksirianlancers
 2nd Sirian lancers,3,Regular,Procyon,Sirian Lancers,sirianlancers2,mariksirianlancers
 3rd Sirian lancers,3,Green,Megrez,Sirian Lancers,sirianlancers3,mariksirianlancers
-Falcons,3,Green,Callison,Silver Hawk Irregulars,,mariksilverhawkirregulars
-Gryphons,3,Regular,Kalidasa,Silver Hawk Irregulars,,mariksilverhawkirregulars
-1st Hussars,3,Veteran,Trellisane,Oriente Hussars,,marikorientehussars
-2nd Hussars,3,Regular,Wallacia,Oriente Hussars,,marikorientehussars
-3rd Hussars,3,Green,Ipswich,Oriente Hussars,,marikorientehussars
-4th Hussars,3,Regular,Atreus,Oriente Hussars,,marikorientehussars
-5th Hussars,3,Green,Sierra,Oriente Hussars,,marikorientehussars
+Falcons,3,Green,Callison,Silver Hawk Irregulars,Falcons,mariksilverhawkirregulars
+Gryphons,3,Regular,Kalidasa,Silver Hawk Irregulars,gryphons,mariksilverhawkirregulars
+1st Hussars,3,Veteran,Trellisane,Oriente Hussars,orientehussars1,marikorientehussars
+2nd Hussars,3,Regular,Wallacia,Oriente Hussars,orientehussars2,marikorientehussars
+3rd Hussars,3,Green,Ipswich,Oriente Hussars,orientehussars3,marikorientehussars
+4th Hussars,3,Regular,Atreus,Oriente Hussars,orientehussars4,marikorientehussars
+5th Hussars,3,Green,Sierra,Oriente Hussars,orientehussars5,marikorientehussars
 1st Defenders,3,Veteran,Andurien,Defenders of Aundurien,defendersofandurien1,marikdefendersofandurien
 3rd Defenders,3,Regular,Shiro,Defenders of Aundurien,defendersofandurien3,marikdefendersofandurien
 4th Defenders,3,Veteran,Scarborough,Defenders of Aundurien,defendersofandurien4,marikdefendersofandurien
 5th Defenders,3,Regular,Nestor,Defenders of Aundurien,defendersofandurien5,marikdefendersofandurien
 6th Defenders,3,Veteran,Andurien,Defenders of Aundurien,defendersofandurien6,marikdefendersofandurien
-Home Guards,3,Veteran,Stewart,Stewart Dragoons,,marikstewartdragoons
-Juggernaut,3,Regular,Payvand,Stewart Dragoons,,marikstewartdragoons
-1st Grenadiers,3,Regular,Vanra,Orloff Grenadiers,,marikorloffgrenadiers
-6th Grenadiers,3,Veteran,Cerillos,Orloff Grenadiers,,marikorloffgrenadiers
-8th Grenadiers,3,Regular,Lesnovo,Orloff Grenadiers,,marikorloffgrenadiers
-1st Regular Hussars,3,Elite,Regulus,Regulan Hussars,,marikregulanhussars
-2nd Regular Hussars,3,Regular,Avior,Regulan Hussars,,marikregulanhussars
-4th Regular Hussars,3,Veteran,Tiber,Regulan Hussars,,marikregulanhussars
-5th Regular Hussars,3,Veteran,Chertan,Regulan Hussars,,marikregulanhussars
-9th Regular Hussars,3,Green,McAffe,Regulan Hussars,,marikregulanhussars
+Home Guards,3,Veteran,Stewart,Stewart Dragoons,homeguards,marikstewartdragoons
+Juggernaut,3,Regular,Payvand,Stewart Dragoons,juggernaut,marikstewartdragoons
+1st Grenadiers,3,Regular,Vanra,Orloff Grenadiers,orloffgrenadiers1,marikorloffgrenadiers
+6th Grenadiers,3,Veteran,Cerillos,Orloff Grenadiers,orloffgrenadiers6,marikorloffgrenadiers
+8th Grenadiers,3,Regular,Lesnovo,Orloff Grenadiers,orloffgrenadiers8,marikorloffgrenadiers
+1st Regular Hussars,3,Elite,Regulus,Regulan Hussars,regulanhussars1,marikregulanhussars
+2nd Regular Hussars,3,Regular,Avior,Regulan Hussars,regulanhussars2,marikregulanhussars
+4th Regular Hussars,3,Veteran,Tiber,Regulan Hussars,regulanhussars4,marikregulanhussars
+5th Regular Hussars,3,Veteran,Chertan,Regulan Hussars,regulanhussars5,marikregulanhussars
+9th Regular Hussars,3,Green,McAffe,Regulan Hussars,regulanhussars9,marikregulanhussars
