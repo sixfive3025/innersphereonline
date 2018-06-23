@@ -31,12 +31,12 @@
 19th Galedon Regulars,3,regular,Bad News,Galedon Regulars,galedonregulars19,kuritagaledonregulars
 21st Galedon Regulars,3,regular,Marlowe's Rift,Galedon Regulars,galedonregulars21,kuritagaledonregulars
 2nd Benjamin Regulars,3,regular,Kajikazawa,Benjamin Regulars,benjaminregulars2,kuritabenjaminregulars
-3rd Benjamin Regulars,3,regular,Irurzun,Benjamin Regulars,,kuritabenjaminregulars
+3rd Benjamin Regulars,3,regular,Irurzun,Benjamin Regulars,benjaminregulars3,kuritabenjaminregulars
 6th Benjamin Regulars,3,green,Irurzun,Benjamin Regulars,benjaminregulars6,kuritabenjaminregulars
-9th Benjamin Regulars,3,veteran,Proserpina,Benjamin Regulars,,kuritabenjaminregulars
-11th Benjamin Regulars,3,regular,Tripoli,Benjamin Regulars,,kuritabenjaminregulars
-15th Benjamin Regulars,3,green,Xinyang,Benjamin Regulars,,kuritabenjaminregulars
-17th Benjamin Regulars,3,veteran,Benjamin,Benjamin Regulars,,kuritabenjaminregulars
+9th Benjamin Regulars,3,veteran,Proserpina,Benjamin Regulars,benjaminregulars9,kuritabenjaminregulars
+11th Benjamin Regulars,3,regular,Tripoli,Benjamin Regulars,benjaminregulars11,kuritabenjaminregulars
+15th Benjamin Regulars,3,green,Xinyang,Benjamin Regulars,benjaminregulars15,kuritabenjaminregulars
+17th Benjamin Regulars,3,veteran,Benjamin,Benjamin Regulars,benjaminregulars17,kuritabenjaminregulars
 3rd Pesht Regulars,3,regular,Pesht,Pesht Regulars,peshtregulars3,kuritapeshtregulars
 4th Pesht Regulars,3,green,Tarnby,Pesht Regulars,peshtregulars4,kuritapeshtregulars
 6th Pesht Regulars,3,green,Nowhere,Pesht Regulars,peshtregulars6,kuritapeshtregulars
@@ -52,12 +52,12 @@
 2nd Legion of Vega,3,regular,Vega,Legion of Vega,,kuritalegionofvega
 11th Legion of Vega,3,regular,Marfik,Legion of Vega,,kuritalegionofvega
 14th Legion of Vega,3,regular,Vega,Legion of Vega,,kuritalegionofvega
-McGavin's Regiment,3,veteran,Basiliano,Night Stalkers,,kuritanightstalkers
-Johiro's Regiment,3,veteran,Matamoras,Night Stalkers,,kuritanightstalkers
-1st Sun Zhang Academy Cadre ,3,green,Thannhausen,Sun Zhang Academy Cadre ,,kuritasunzhangcadre
-5th Sun Zhang Academy Cadre ,3,green,Moritz,Sun Zhang Academy Cadre ,,kuritasunzhangcadre
-9th Sun Zhang Academy Cadre ,3,green,Dieron,Sun Zhang Academy Cadre ,,kuritasunzhangcadre
-12th Sun Zhang Academy Cadre ,3,green,Kessel,Sun Zhang Academy Cadre ,,kuritasunzhangcadre
+McGavin's Regiment,3,veteran,Basiliano,Night Stalkers,mcgavinsregiment,kuritanightstalkers
+Johiro's Regiment,3,veteran,Matamoras,Night Stalkers,johirosregiment,kuritanightstalkers
+1st Sun Zhang Academy Cadre ,3,green,Thannhausen,Sun Zhang Academy Cadre ,sunzhangcadre1,kuritasunzhangcadre
+5th Sun Zhang Academy Cadre ,3,green,Moritz,Sun Zhang Academy Cadre ,sunzhangcadre5,kuritasunzhangcadre
+9th Sun Zhang Academy Cadre ,3,green,Dieron,Sun Zhang Academy Cadre ,sunzhangcadre9,kuritasunzhangcadre
+12th Sun Zhang Academy Cadre ,3,green,Kessel,Sun Zhang Academy Cadre ,sunzhangcadre12,kuritasunzhangcadre
 2nd An Ting Legion,3,regular,New Caledonia,An Ting Legion,,kuritaantinglegion
 4th An Ting Legion,3,regular,Valentina,An Ting Legion,,kuritaantinglegion
 Altenmarkt Militia,2,Veteran,Outpost,Independent,altenmarktmilitia,genericindependent
